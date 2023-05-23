@@ -11,52 +11,37 @@ class ApiService {
     return await response.json();
   }
 
-  async getPeople() {
-    const response = await this.getResources(`/people/`);
-    return response.results;
-  }
-
-  async getPeopleTransformed() {
+  getPeople = async () => {
     const response = await this.getResources(`/people/`);
     return response.results.map((person) => this._transformPerson(person));
-  }
+  };
 
-  async getPerson(id) {
+  getPerson = async (id) => {
     const person = await this.getResources(`/people/${id}`);
     return this._transformPerson(person);
-  }
+  };
 
-  async getAllPlanets() {
-    const response = await this.getResources(`/planets/`);
-    return response.results;
-  }
-
-  async getAllTransformedPlanets() {
+  getAllPlanets = async () => {
     const response = await this.getResources(`/planets/`);
     return response.results.map((planet) => this._transformPlanet(planet));
-  }
+  };
 
-  async getPlanet(id) {
+  getPlanet = async (id) => {
     const planet = await this.getResources(`/planets/${id}`);
     return this._transformPlanet(planet);
-  }
+  };
 
-  async getAllStarships() {
-    const response = await this.getResources(`/starships/`);
-    return response.results;
-  }
-
-  async getAllTransformedStarships() {
+  getAllStarships = async () => {
     const response = await this.getResources(`/starships/`);
     return response.results.map((starShip) =>
       this._transformStarship(starShip)
     );
-  }
+  };
 
-  getStarship(id) {
+  getStarship = async (id) => {
     const starship = this.getResources(`/starships/${id}`);
     return this._transformStarship(starship);
-  }
+  };
 
   _transformPlanet(planet) {
     return {
@@ -64,7 +49,6 @@ class ApiService {
       name: planet.name,
       population: planet.population,
       rotationPeriod: planet.rotation_period,
-
       diameter: planet.diameter,
     };
   }
@@ -74,7 +58,6 @@ class ApiService {
       id: this._extractId(person.url),
       name: person.name,
       birthYear: person.birth_year,
-      homeWorldId: this._extractId(person.homeworld),
       gender: person.gender,
       eyeColor: person.eye_color,
     };

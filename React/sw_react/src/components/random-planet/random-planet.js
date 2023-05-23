@@ -6,7 +6,7 @@ import PlanetView from "../planet-view";
 import Spinner from "../spinner";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 
-const RandomPlanet = () => {
+function RandomPlanet() {
   const apiService = new ApiService();
 
   const [planet, setPlanet] = useState({
@@ -24,16 +24,18 @@ const RandomPlanet = () => {
   const onPlanetLoaded = (planet) => {
     setPlanet(planet);
     setLoading(false);
+    setError(false);
   };
 
   const updatePlanet = async () => {
     let id = Math.floor(Math.random() * 17 + 2);
 
-    try {
-      apiService.getPlanet(id).then(onPlanetLoaded);
-    } catch (e) {
-      setError(true);
-    }
+    apiService
+      .getPlanet(id)
+      .then(onPlanetLoaded)
+      .catch(() => {
+        setError(true);
+      });
   };
 
   useEffect(() => {
@@ -58,5 +60,6 @@ const RandomPlanet = () => {
       {content}
     </div>
   );
-};
+}
+
 export default RandomPlanet;
