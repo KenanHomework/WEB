@@ -1,5 +1,6 @@
 class ApiService {
-  _apiBaseUrl = "https://swapi.dev/api";
+  _apiBaseUrl = "https://swapi.py4e.com/api";
+  _apiImgBaseUrl = "https://starwars-visualguide.com/assets/img";
 
   async getResources(url) {
     const response = await fetch(`${this._apiBaseUrl}${url}`);
@@ -17,8 +18,12 @@ class ApiService {
   };
 
   getPerson = async (id) => {
-    const person = await this.getResources(`/people/${id}`);
+    const person = await this.getResources(`/people/${id}/`);
     return this._transformPerson(person);
+  };
+
+  getPersonImg = (id) => {
+    return `${this._apiImgBaseUrl}/characters/${id}.jpg`;
   };
 
   getAllPlanets = async () => {
@@ -31,6 +36,10 @@ class ApiService {
     return this._transformPlanet(planet);
   };
 
+  getPlanetImg = (id) => {
+    return `${this._apiImgBaseUrl}/planets/${id}/`;
+  };
+
   getAllStarships = async () => {
     const response = await this.getResources(`/starships/`);
     return response.results.map((starShip) =>
@@ -41,6 +50,10 @@ class ApiService {
   getStarship = async (id) => {
     const starship = this.getResources(`/starships/${id}`);
     return this._transformStarship(starship);
+  };
+
+  getStarshipImg = (id) => {
+    return `${this._apiImgBaseUrl}/starships/${id}/`;
   };
 
   _transformPlanet(planet) {

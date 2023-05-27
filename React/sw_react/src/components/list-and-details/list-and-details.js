@@ -1,16 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ItemList from "../item-list";
-import ListItemDetails from "../list-item-details";
+import ItemDetails from "../item-details";
 
 const ListAndDetails = ({
   renderItem,
   getData,
-  onSelectionChange,
-  selectedId,
-  imgUrl,
-  displayName,
-  itemData,
+  getSelectedItem,
+  getImg,
+  renderDetailsDisplayName,
 }) => {
+  const [selectedId, setSelectedId] = useState(-1);
+  const [selectedItem, setSelectedItem] = useState({});
+
+  const onSelectionChange = (id) => {
+    setSelectedId(id);
+  };
+
+  const updatePerson = () => {
+    if (selectedId == null || selectedId === -1) return;
+    getSelectedItem(selectedId).then(setSelectedItem);
+  };
+
+  useEffect(updatePerson, [selectedId]);
+
+  // console.log(
+  //   selectedId === null || selectedId <= 0
+  //     ? "failed to select"
+  //     : getSelectedItem(selectedId)
+  // );
+  // console.log(_getSelectedItem().value);
   return (
     <div className="row mb2">
       <div className="col-md-6">
@@ -22,10 +40,11 @@ const ListAndDetails = ({
         />
       </div>
       <div className="col-md-6">
-        <ListItemDetails
-          imgUrl={imgUrl}
-          displayName={displayName}
-          itemData={itemData}
+        <ItemDetails
+          imgUrl={getImg(selectedId)}
+          renderDetailsDisplayName={renderDetailsDisplayName}
+          itemData={selectedItem}
+          // itemData={getSelectedItem(selectedId).then((person) => person)}
         />
       </div>
     </div>

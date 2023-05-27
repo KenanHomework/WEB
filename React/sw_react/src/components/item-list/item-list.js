@@ -1,22 +1,20 @@
 import React, { useEffect, useState } from "react";
 import "./item-list.css";
-import ApiService from "../../Services/api-service";
 import Spinner from "../spinner";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 const ItemList = ({ getData, renderItem, onSelectionChange, selectedId }) => {
-  const apiService = new ApiService();
   const [itemList, setItemList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [animationParent] = useAutoAnimate();
 
-  function onPeopleLoaded(items) {
+  function onItemsLoaded(items) {
     setItemList(items);
     setLoading(false);
   }
 
   const updateData = () => {
-    getData().then(onPeopleLoaded);
+    getData().then(onItemsLoaded);
   };
 
   useEffect(updateData, []);
