@@ -23,12 +23,6 @@ const ListAndDetails = ({
 
   useEffect(updatePerson, [selectedId]);
 
-  // console.log(
-  //   selectedId === null || selectedId <= 0
-  //     ? "failed to select"
-  //     : getSelectedItem(selectedId)
-  // );
-  // console.log(_getSelectedItem().value);
   return (
     <div className="row mb2">
       <div className="col-md-6">
@@ -44,7 +38,6 @@ const ListAndDetails = ({
           imgUrl={getImg(selectedId)}
           renderDetailsDisplayName={renderDetailsDisplayName}
           itemData={selectedItem}
-          // itemData={getSelectedItem(selectedId).then((person) => person)}
         />
       </div>
     </div>
