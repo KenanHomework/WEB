@@ -37,7 +37,7 @@ class ApiService {
   };
 
   getPlanetImg = (id) => {
-    return `${this._apiImgBaseUrl}/planets/${id}/`;
+    return `${this._apiImgBaseUrl}/planets/${id}.jpg`;
   };
 
   getAllStarships = async () => {
@@ -48,12 +48,12 @@ class ApiService {
   };
 
   getStarship = async (id) => {
-    const starship = this.getResources(`/starships/${id}`);
+    const starship = await this.getResources(`/starships/${id}`);
     return this._transformStarship(starship);
   };
 
   getStarshipImg = (id) => {
-    return `${this._apiImgBaseUrl}/starships/${id}/`;
+    return `${this._apiImgBaseUrl}/starships/${id}.jpg`;
   };
 
   _transformPlanet(planet) {
