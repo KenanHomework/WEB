@@ -13,28 +13,24 @@ db.run(
   "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT, age INTEGER)"
 );
 const server = http.createServer((req, res) => {
+  var db = new sqlite3.Database("users_db.db");
   if (req.method == "GET") {
     res.statusCode = 200;
     res.setHeader("Content-Type", "text/html");
 
-    var db = new sqlite3.Database("users_db.db");
-    let users = [];
-
     db.all("SELECT * FROM users", function (err, rows) {
+      let users = [];
       rows.forEach(function (row) {
         users.push({ id: row.id, name: row.name, age: row.age });
       });
+      res.write(JSON.stringify(users));
+      res.end();
     });
-
-    res.write(JSON.stringify(users));
-    res.end();
   } else if (req.method == "POST") {
     req.setEncoding("utf-8");
     let err_msg = "";
-    req.on("data", (chunk) => {
-      var db = new sqlite3.Database("users_db.db");
-
-      const user = JSON.parse(chunk);
+    req.on("data", (data) => {
+      const user = JSON.parse(data);
       console.log(user);
       db.run(
         "INSERT INTO users(name, age) VALUES(?, ?)",
@@ -51,6 +47,16 @@ const server = http.createServer((req, res) => {
     res.statusCode = 200;
     res.setHeader("Content-Type", "application/json");
     res.write(err_msg ? err_msg : "Successfully added new user");
+    res.end();
+  } else if (req.method == "DELETE") {
+    req.setEncoding("utf-8");
+    let err_msg = "";
+    req.on("data", (id) => {
+      db.run("DELETE FROM users WHERE id=(?)", id);
+    });
+    res.statusCode = 200;
+    res.setHeader("Content-Type", "application/json");
+    res.write(err_msg ? err_msg : "Successfully deleted user");
     res.end();
   } else {
     res.statusCode = 404;
